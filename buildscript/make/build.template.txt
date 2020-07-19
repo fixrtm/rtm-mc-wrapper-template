@@ -1,0 +1,7 @@
+main
+    mkdir str ./build
+    mv str ./build/dts/LICENSE.txt str ./src/LICENSE-rtm-mc-wrapper.txt
+    cd str ./src
+    zip str ../build/out.zip
+    rm str ./LICENSE-rtm-mc-wrapper.txt
+end_main

@@ -1,0 +1,40 @@
+set tmpFile exec make-temp
+set tempDir exec make-temp
+
+final
+    rm get tmpFile
+    rm get tempDir
+end_final
+
+main
+    rm get tempDir
+    mkdir get tempDir
+
+    set dtsDir str ./build/dts
+
+    load_config str ./config.txt
+
+    function move-dts 1
+        rm str $dtsDir/${1}
+        mv str $tempDir/${1} str $dtsDir/${1}
+    end_function
+
+    set zipUrl str https://github.com/anatawa12/rtm-mc-wrapper/releases/download/${config_version}/rtm-mc-wrapper-${config_version}.zip
+
+    rm get dtsDir
+    mkdir get dtsDir
+
+    wget get zipUrl get tmpFile
+
+    unzip get tmpFile get tempDir
+
+    call 1 move-dts str api.d.ts
+    call 1 move-dts str rhino-import.d.ts
+    call 1 move-dts str LICENSE.txt
+
+    if exits str $tempDir/api.included.${config_included}.d.ts
+        call 1 move-dts str api.included.${config_included}.d.ts
+    else
+        echo str warn: invalid included version name. the version not found: ${config_included}
+    end_if
+end_main
